@@ -160,6 +160,25 @@ public class RoutineService {
     }
 
     @Transactional
+    public RoutineDto.UpdateResponse update(Long userId, Long routineId, RoutineDto.UpdateRequest request) {
+        Routine routine = routineRepository.findById(routineId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 루틴을 찾을 수 없습니다"));
+
+        if (!routine.getUser().getUserId().equals(userId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근 권한이 없습니다");
+        }
+
+        routine.update(request.getPlanATitle(), request.getPlanBTitle(), request.getTargetCount());
+
+        return RoutineDto.UpdateResponse.builder()
+                .routineId(routine.getRoutineId())
+                .planATitle(routine.getPlanATitle())
+                .planBTitle(routine.getPlanBTitle())
+                .targetCount(routine.getTargetCount())
+                .build();
+    }
+
+    @Transactional
     public void delete(Long userId, Long routineId) {
         Routine routine = routineRepository.findById(routineId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 루틴을 찾을 수 없습니다"));
@@ -168,6 +187,7 @@ public class RoutineService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근 권한이 없습니다");
         }
 
+        routineLogRepository.deleteAllByRoutineRoutineId(routineId);
         routineRepository.delete(routine);
     }
 }

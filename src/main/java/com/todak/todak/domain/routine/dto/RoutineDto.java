@@ -74,6 +74,34 @@ public class RoutineDto {
     }
 
     @Getter
+    public static class UpdateRequest {
+        @JsonProperty("plan_a_title")
+        private String planATitle;
+
+        @JsonProperty("plan_b_title")
+        private String planBTitle;
+
+        @JsonProperty("target_count")
+        private Integer targetCount;
+    }
+
+    @Getter
+    @Builder
+    public static class UpdateResponse {
+        @JsonProperty("routine_id")
+        private Long routineId;
+
+        @JsonProperty("plan_a_title")
+        private String planATitle;
+
+        @JsonProperty("plan_b_title")
+        private String planBTitle;
+
+        @JsonProperty("target_count")
+        private Integer targetCount;
+    }
+
+    @Getter
     public static class ProgressRequest {
         private Integer delta;
     }

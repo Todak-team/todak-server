@@ -93,6 +93,25 @@ public class GoalService {
     }
 
     @Transactional
+    public GoalDto.UpdateResponse update(Long userId, Long goalId, GoalDto.UpdateRequest request) {
+        Goal goal = goalRepository.findById(goalId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 목표를 찾을 수 없습니다"));
+
+        if (!goal.getUser().getUserId().equals(userId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근 권한이 없습니다");
+        }
+
+        goal.update(request.getPlanATitle(), request.getPlanBTitle(), request.getDueDate());
+
+        return GoalDto.UpdateResponse.builder()
+                .goalId(goal.getGoalId())
+                .planATitle(goal.getPlanATitle())
+                .planBTitle(goal.getPlanBTitle())
+                .dueDate(goal.getDueDate())
+                .build();
+    }
+
+    @Transactional
     public void delete(Long userId, Long goalId) {
         Goal goal = goalRepository.findById(goalId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 목표를 찾을 수 없습니다"));

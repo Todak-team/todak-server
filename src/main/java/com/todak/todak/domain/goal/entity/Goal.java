@@ -55,4 +55,10 @@ public class Goal {
         this.isCompleted = true;
         this.completedPlan = completedPlan;
     }
+
+    public void update(String planATitle, String planBTitle, LocalDate dueDate) {
+        if (planATitle != null) this.planATitle = planATitle;
+        if (planBTitle != null) this.planBTitle = planBTitle;
+        if (dueDate != null) this.dueDate = dueDate;
+    }
 }
