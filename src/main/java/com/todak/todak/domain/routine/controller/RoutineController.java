@@ -55,6 +55,15 @@ public class RoutineController {
         return ResponseEntity.ok(ApiResponse.success(routineService.complete(userId, routineId, request)));
     }
 
+    @PatchMapping("/{routineId}")
+    @Operation(summary = "루틴 수정")
+    public ResponseEntity<ApiResponse<RoutineDto.UpdateResponse>> update(
+            @AuthenticationPrincipal Long userId,
+            @PathVariable Long routineId,
+            @RequestBody RoutineDto.UpdateRequest request) {
+        return ResponseEntity.ok(ApiResponse.success(routineService.update(userId, routineId, request)));
+    }
+
     @DeleteMapping("/{routineId}")
     @Operation(summary = "루틴 삭제")
     public ResponseEntity<ApiResponse<Map<String, String>>> delete(

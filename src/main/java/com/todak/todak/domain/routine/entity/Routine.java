@@ -43,4 +43,10 @@ public class Routine {
         this.targetCount = targetCount != null ? targetCount : 1;
         this.createdAt = LocalDateTime.now();
     }
+
+    public void update(String planATitle, String planBTitle, Integer targetCount) {
+        if (planATitle != null) this.planATitle = planATitle;
+        if (planBTitle != null) this.planBTitle = planBTitle;
+        if (targetCount != null) this.targetCount = targetCount;
+    }
 }

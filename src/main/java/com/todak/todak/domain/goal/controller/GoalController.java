@@ -46,6 +46,15 @@ public class GoalController {
         return ResponseEntity.ok(ApiResponse.success(goalService.complete(userId, goalId, request)));
     }
 
+    @PatchMapping("/{goalId}")
+    @Operation(summary = "목표 수정")
+    public ResponseEntity<ApiResponse<GoalDto.UpdateResponse>> update(
+            @AuthenticationPrincipal Long userId,
+            @PathVariable Long goalId,
+            @RequestBody GoalDto.UpdateRequest request) {
+        return ResponseEntity.ok(ApiResponse.success(goalService.update(userId, goalId, request)));
+    }
+
     @DeleteMapping("/{goalId}")
     @Operation(summary = "목표 삭제")
     public ResponseEntity<ApiResponse<Map<String, String>>> delete(
