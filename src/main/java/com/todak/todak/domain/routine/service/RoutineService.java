@@ -187,6 +187,7 @@ public class RoutineService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근 권한이 없습니다");
         }
 
+        routineLogRepository.deleteAllByRoutineRoutineId(routineId);
         routineRepository.delete(routine);
     }
 }
