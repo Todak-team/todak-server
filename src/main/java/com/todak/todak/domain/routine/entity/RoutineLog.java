@@ -37,21 +37,31 @@ public class RoutineLog {
     @Column(length = 1)
     private String completedPlan;
 
-    @Column(nullable = false)
     private Integer emotionScore;
+
+    @Column(columnDefinition = "INT DEFAULT 0")
+    private Integer currentCount = 0;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
     @Builder
     public RoutineLog(Routine routine, User user, LocalDate logDate,
-                      Boolean isCompleted, String completedPlan, Integer emotionScore) {
+                      Boolean isCompleted, String completedPlan, Integer emotionScore, Integer currentCount) {
         this.routine = routine;
         this.user = user;
         this.logDate = logDate;
         this.isCompleted = isCompleted;
         this.completedPlan = completedPlan;
         this.emotionScore = emotionScore;
+        this.currentCount = currentCount != null ? currentCount : 0;
         this.createdAt = LocalDateTime.now();
+    }
+
+    public void applyProgress(int delta, int targetCount) {
+        this.currentCount = Math.max(0, (this.currentCount != null ? this.currentCount : 0) + delta);
+        if (this.currentCount >= targetCount) {
+            this.isCompleted = true;
+        }
     }
 }

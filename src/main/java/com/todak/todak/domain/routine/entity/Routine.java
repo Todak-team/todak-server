@@ -29,14 +29,18 @@ public class Routine {
     @Column(length = 200)
     private String planBTitle;
 
+    @Column(nullable = false, columnDefinition = "INT DEFAULT 1")
+    private Integer targetCount = 1;
+
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
     @Builder
-    public Routine(User user, String planATitle, String planBTitle) {
+    public Routine(User user, String planATitle, String planBTitle, Integer targetCount) {
         this.user = user;
         this.planATitle = planATitle;
         this.planBTitle = planBTitle;
+        this.targetCount = targetCount != null ? targetCount : 1;
         this.createdAt = LocalDateTime.now();
     }
 }

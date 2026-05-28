@@ -79,6 +79,10 @@ public class GoalService {
         Goal goal = goalRepository.findById(goalId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 목표를 찾을 수 없습니다"));
 
+        if (!goal.getUser().getUserId().equals(userId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근 권한이 없습니다");
+        }
+
         goal.complete(request.getCompletedPlan());
 
         return GoalDto.CompleteResponse.builder()
@@ -92,6 +96,11 @@ public class GoalService {
     public void delete(Long userId, Long goalId) {
         Goal goal = goalRepository.findById(goalId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 목표를 찾을 수 없습니다"));
+
+        if (!goal.getUser().getUserId().equals(userId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근 권한이 없습니다");
+        }
+
         goalRepository.delete(goal);
     }
 }

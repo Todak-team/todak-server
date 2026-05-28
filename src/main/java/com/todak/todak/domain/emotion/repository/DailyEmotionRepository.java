@@ -15,4 +15,7 @@ public interface DailyEmotionRepository extends JpaRepository<DailyEmotion, Long
 
     @Query("SELECT e FROM DailyEmotion e WHERE e.user.userId = :userId ORDER BY e.checkedDate DESC LIMIT 3")
     List<DailyEmotion> findTop3ByUserIdOrderByCheckedDateDesc(@Param("userId") Long userId);
+
+    List<DailyEmotion> findByUserUserIdAndCheckedDateBetweenOrderByCheckedDateAsc(
+            Long userId, LocalDate start, LocalDate end);
 }

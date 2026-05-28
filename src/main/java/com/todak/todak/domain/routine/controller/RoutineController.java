@@ -37,6 +37,15 @@ public class RoutineController {
         return ResponseEntity.ok(ApiResponse.success(routineService.getList(userId)));
     }
 
+    @PatchMapping("/{routineId}/progress")
+    @Operation(summary = "루틴 진행 카운트 업데이트 (delta: 양수=증가, 음수=감소)")
+    public ResponseEntity<ApiResponse<RoutineDto.ProgressResponse>> progress(
+            @AuthenticationPrincipal Long userId,
+            @PathVariable Long routineId,
+            @RequestBody RoutineDto.ProgressRequest request) {
+        return ResponseEntity.ok(ApiResponse.success(routineService.progress(userId, routineId, request)));
+    }
+
     @PatchMapping("/{routineId}/complete")
     @Operation(summary = "루틴 완료 처리")
     public ResponseEntity<ApiResponse<RoutineDto.CompleteResponse>> complete(

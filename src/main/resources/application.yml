@@ -10,17 +10,16 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true
     show-sql: true
 
 jwt:
-  secret: ${JWT_SECRET}   # 32자 이상 랜덤 문자열 (환경변수로 주입)
+  secret: ${JWT_SECRET}
   expiration: 604800000   # 7일 (ms)
 
 kakao:
-  client-id: ${KAKAO_CLIENT_ID}       # 카카오 디벨로퍼스 REST API 키
-  redirect-uri: ${KAKAO_REDIRECT_URI} # 등록한 Redirect URI
+  client-id: ${KAKAO_CLIENT_ID}
+  redirect-uri: ${KAKAO_REDIRECT_URI}
 
 springdoc:
   swagger-ui:

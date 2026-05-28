@@ -24,13 +24,25 @@ public class User {
     @Column(nullable = false, length = 50)
     private String nickname;
 
+    @Column(length = 200)
+    private String email;
+
+    @Column(length = 500)
+    private String profileImageUrl;
+
+    @Column(nullable = false, columnDefinition = "TINYINT(1) DEFAULT 0")
+    private Boolean isPro = false;
+
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
     @Builder
-    public User(String kakaoId, String nickname) {
+    public User(String kakaoId, String nickname, String email, String profileImageUrl) {
         this.kakaoId = kakaoId;
         this.nickname = nickname;
+        this.email = email;
+        this.profileImageUrl = profileImageUrl;
+        this.isPro = false;
         this.createdAt = LocalDateTime.now();
     }
 }

@@ -18,11 +18,15 @@ public class KakaoUserInfoResponse {
     @Getter
     public static class KakaoAccount {
         private KakaoProfile profile;
+        private String email;
     }
 
     @Getter
     public static class KakaoProfile {
         private String nickname;
+
+        @JsonProperty("profile_image_url")
+        private String profileImageUrl;
     }
 
     public String getKakaoId() {
@@ -34,5 +38,16 @@ public class KakaoUserInfoResponse {
             return kakaoAccount.getProfile().getNickname();
         }
         return "토닥유저";
+    }
+
+    public String getEmail() {
+        return kakaoAccount != null ? kakaoAccount.getEmail() : null;
+    }
+
+    public String getProfileImageUrl() {
+        if (kakaoAccount != null && kakaoAccount.getProfile() != null) {
+            return kakaoAccount.getProfile().getProfileImageUrl();
+        }
+        return null;
     }
 }

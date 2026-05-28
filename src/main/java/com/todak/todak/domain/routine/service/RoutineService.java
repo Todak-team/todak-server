@@ -41,6 +41,7 @@ public class RoutineService {
                 .user(user)
                 .planATitle(request.getPlanATitle())
                 .planBTitle(request.getPlanBTitle())
+                .targetCount(request.getTargetCount())
                 .build();
 
         Routine saved = routineRepository.save(routine);
@@ -49,6 +50,7 @@ public class RoutineService {
                 .routineId(saved.getRoutineId())
                 .planATitle(saved.getPlanATitle())
                 .planBTitle(saved.getPlanBTitle())
+                .targetCount(saved.getTargetCount())
                 .createdAt(saved.getCreatedAt())
                 .build();
     }
@@ -70,9 +72,11 @@ public class RoutineService {
                     .routineId(routine.getRoutineId())
                     .planATitle(routine.getPlanATitle())
                     .planBTitle(routine.getPlanBTitle())
+                    .targetCount(routine.getTargetCount())
                     .todayLog(RoutineDto.RoutineItem.TodayLog.builder()
                             .isCompleted(logOpt.map(RoutineLog::getIsCompleted).orElse(false))
                             .completedPlan(logOpt.map(RoutineLog::getCompletedPlan).orElse(null))
+                            .currentCount(logOpt.map(RoutineLog::getCurrentCount).orElse(0))
                             .build())
                     .build();
         }).collect(Collectors.toList());
@@ -118,9 +122,52 @@ public class RoutineService {
     }
 
     @Transactional
+    public RoutineDto.ProgressResponse progress(Long userId, Long routineId, RoutineDto.ProgressRequest request) {
+        Routine routine = routineRepository.findById(routineId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 루틴을 찾을 수 없습니다"));
+
+        if (!routine.getUser().getUserId().equals(userId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근 권한이 없습니다");
+        }
+
+        int delta = request.getDelta() != null ? request.getDelta() : 1;
+        LocalDate today = LocalDate.now();
+
+        RoutineLog log = routineLogRepository
+                .findByRoutineRoutineIdAndUserUserIdAndLogDate(routineId, userId, today)
+                .orElseGet(() -> {
+                    User user = userRepository.findById(userId)
+                            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다"));
+                    return routineLogRepository.save(RoutineLog.builder()
+                            .routine(routine)
+                            .user(user)
+                            .logDate(today)
+                            .isCompleted(false)
+                            .completedPlan(null)
+                            .emotionScore(null)
+                            .currentCount(0)
+                            .build());
+                });
+
+        log.applyProgress(delta, routine.getTargetCount());
+
+        return RoutineDto.ProgressResponse.builder()
+                .routineId(routineId)
+                .currentCount(log.getCurrentCount())
+                .targetCount(routine.getTargetCount())
+                .isCompleted(log.getIsCompleted())
+                .build();
+    }
+
+    @Transactional
     public void delete(Long userId, Long routineId) {
         Routine routine = routineRepository.findById(routineId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 루틴을 찾을 수 없습니다"));
+
+        if (!routine.getUser().getUserId().equals(userId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근 권한이 없습니다");
+        }
+
         routineRepository.delete(routine);
     }
 }

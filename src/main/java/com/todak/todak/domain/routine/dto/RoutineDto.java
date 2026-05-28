@@ -17,6 +17,9 @@ public class RoutineDto {
 
         @JsonProperty("plan_b_title")
         private String planBTitle;
+
+        @JsonProperty("target_count")
+        private Integer targetCount;
     }
 
     @Getter
@@ -30,6 +33,9 @@ public class RoutineDto {
 
         @JsonProperty("plan_b_title")
         private String planBTitle;
+
+        @JsonProperty("target_count")
+        private Integer targetCount;
 
         @JsonProperty("created_at")
         private LocalDateTime createdAt;
@@ -47,6 +53,9 @@ public class RoutineDto {
         @JsonProperty("plan_b_title")
         private String planBTitle;
 
+        @JsonProperty("target_count")
+        private Integer targetCount;
+
         @JsonProperty("today_log")
         private TodayLog todayLog;
 
@@ -58,7 +67,31 @@ public class RoutineDto {
 
             @JsonProperty("completed_plan")
             private String completedPlan;
+
+            @JsonProperty("current_count")
+            private Integer currentCount;
         }
+    }
+
+    @Getter
+    public static class ProgressRequest {
+        private Integer delta;
+    }
+
+    @Getter
+    @Builder
+    public static class ProgressResponse {
+        @JsonProperty("routine_id")
+        private Long routineId;
+
+        @JsonProperty("current_count")
+        private Integer currentCount;
+
+        @JsonProperty("target_count")
+        private Integer targetCount;
+
+        @JsonProperty("is_completed")
+        private Boolean isCompleted;
     }
 
     @Getter
