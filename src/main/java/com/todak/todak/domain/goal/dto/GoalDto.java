@@ -74,6 +74,34 @@ public class GoalDto {
     }
 
     @Getter
+    public static class UpdateRequest {
+        @JsonProperty("plan_a_title")
+        private String planATitle;
+
+        @JsonProperty("plan_b_title")
+        private String planBTitle;
+
+        @JsonProperty("due_date")
+        private LocalDate dueDate;
+    }
+
+    @Getter
+    @Builder
+    public static class UpdateResponse {
+        @JsonProperty("goal_id")
+        private Long goalId;
+
+        @JsonProperty("plan_a_title")
+        private String planATitle;
+
+        @JsonProperty("plan_b_title")
+        private String planBTitle;
+
+        @JsonProperty("due_date")
+        private LocalDate dueDate;
+    }
+
+    @Getter
     public static class CompleteRequest {
         @JsonProperty("completed_plan")
         private String completedPlan;
