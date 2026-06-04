@@ -18,12 +18,12 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @Operation(summary = "카카오 소셜 로그인", description = "카카오 인가 코드를 전달받아 JWT를 발급합니다")
+    @Operation(summary = "카카오 소셜 로그인", description = "카카오 액세스 토큰을 전달받아 JWT를 발급합니다")
     @PostMapping("/kakao")
     public ResponseEntity<ApiResponse<AuthDto.KakaoLoginResponse>> kakaoLogin(
             @Valid @RequestBody AuthDto.KakaoLoginRequest request
     ) {
-        AuthDto.KakaoLoginResponse response = authService.kakaoLogin(request.getKakaoCode());
+        AuthDto.KakaoLoginResponse response = authService.kakaoLogin(request.getAccessToken());
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 }

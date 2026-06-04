@@ -148,7 +148,6 @@ public class RoutineService {
                             .currentCount(0)
                             .build());
                 });
-
         log.applyProgress(delta, routine.getTargetCount());
 
         return RoutineDto.ProgressResponse.builder()
@@ -156,6 +155,7 @@ public class RoutineService {
                 .currentCount(log.getCurrentCount())
                 .targetCount(routine.getTargetCount())
                 .isCompleted(log.getIsCompleted())
+
                 .build();
     }
 

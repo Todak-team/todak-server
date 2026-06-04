@@ -11,9 +11,9 @@ public class AuthDto {
     @Getter
     public static class KakaoLoginRequest {
 
-        @NotBlank(message = "카카오 인가 코드는 필수입니다")
-        @JsonProperty("kakao_code")
-        private String kakaoCode;
+        @NotBlank(message = "카카오 액세스 토큰은 필수입니다")
+        @JsonProperty("access_token")
+        private String accessToken;
     }
 
     /** POST /api/auth/kakao 응답 바디 */
